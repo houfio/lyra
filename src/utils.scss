@@ -1,0 +1,47 @@
+$breakpoints: (
+  phone: 0,
+  tablet: 37.5,
+  laptop: 56.25,
+  desktop: 75
+);
+
+@mixin with-breakpoint($breakpoint) {
+  $width: map-get($breakpoints, $breakpoint);
+
+  @if $width > 0 {
+    @media (min-width: #{$width}rem) {
+      @content
+    }
+  } @else {
+    @content
+  }
+}
+
+$colors: (
+  gray: (
+    0: (#ffffff, #1f1f1f),
+    100: (#efefef, #303030),
+    200: (#d4d4d4, #404040),
+    300: (#9a9a9a, #5f5f5f),
+    400: (#707070, #929292),
+    500: (#454545, #efefef)
+  ),
+  green: (
+    100: (#aaffc7, #07441b),
+    200: (#1db954, #1db954),
+    300: (#196d2b, #aaffc7)
+  )
+);
+
+@mixin with-colors($theme) {
+  $index: map-get((
+    light: 1,
+    dark: 2
+  ), $theme);
+
+  @each $color, $shades in $colors {
+    @each $shade, $hex in $shades {
+      --#{$color + ""}-#{$shade}: #{nth($hex, $index)};
+    }
+  }
+}

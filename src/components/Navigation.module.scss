@@ -1,0 +1,27 @@
+.navigation {
+  position: sticky;
+  top: 0;
+  background-color: var(--gray-0);
+  border-top: 3px solid var(--green-200);
+  z-index: 10;
+}
+
+.inner {
+  flex-direction: row;
+  align-items: center;
+  height: 8rem;
+}
+
+.brand {
+  flex: 1;
+}
+
+.logo {
+  height: 1rem;
+}
+
+.link {
+  margin-right: 1rem;
+  background-color: var(--gray-0);
+  color: var(--gray-500);
+}

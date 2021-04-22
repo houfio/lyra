@@ -1,0 +1,29 @@
+.card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  text-align: start;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--gray-100);
+  border-radius: 16px;
+  user-select: none;
+  transition: box-shadow .25s ease, opacity .25s ease;
+}
+
+.cover {
+  width: 4rem;
+  margin-right: 1rem;
+  border-radius: 8px;
+}
+
+.details {
+  display: inline-flex;
+  flex-direction: column;
+  font-weight: bold;
+
+  & > *:last-child {
+    color: var(--gray-400);
+    font-weight: normal;
+  }
+}

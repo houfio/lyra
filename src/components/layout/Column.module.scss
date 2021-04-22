@@ -1,0 +1,24 @@
+@import "src/utils";
+
+$columns: 6;
+
+.column {
+  flex: 0 0 100%;
+  position: relative;
+  display: none;
+  flex-direction: column;
+
+  @each $breakpoint, $width in $breakpoints {
+    @include with-breakpoint($breakpoint) {
+      &[data-#{$breakpoint}] {
+        display: flex;
+      }
+
+      @for $size from 1 through $columns {
+        &[data-#{$breakpoint}="#{$size}"] {
+          flex-basis: #{100% / $columns * $size};
+        }
+      }
+    }
+  }
+}

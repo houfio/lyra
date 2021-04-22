@@ -1,0 +1,22 @@
+@import "src/utils";
+
+$spaces: 3;
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+
+  @each $breakpoint, $width in $breakpoints {
+    @include with-breakpoint($breakpoint) {
+      @for $space from 1 through $spaces {
+        &[data-#{$breakpoint}="#{$space}"] {
+          margin: -#{$space / 2}rem;
+
+          & > * {
+            padding: #{$space / 2}rem;
+          }
+        }
+      }
+    }
+  }
+}

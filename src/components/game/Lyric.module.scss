@@ -1,0 +1,40 @@
+@import "src/utils";
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 14rem;
+  padding-bottom: 2rem;
+
+  @include with-breakpoint(laptop) {
+    height: calc(50vh - 14rem);
+  }
+}
+
+.lyric {
+  position: relative;
+  display: flex;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+
+  @include with-breakpoint(laptop) {
+    font-size: 3rem;
+  }
+}
+
+.quote {
+  position: absolute;
+  top: -.25rem;
+  left: -.25rem;
+  width: 2rem;
+  color: var(--gray-200);
+  z-index: -1;
+
+  @include with-breakpoint(laptop) {
+    top: -2rem;
+    left: -2rem;
+    width: 6rem;
+  }
+}
