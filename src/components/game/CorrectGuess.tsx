@@ -1,5 +1,9 @@
+import Link from 'next/link';
+
 import { CollectionEntry, TracksResponse } from '../../types';
 import { Button } from '../forms/Button';
+
+import styles from './CorrectGuess.module.scss';
 
 type Props = {
   track: CollectionEntry<TracksResponse>,
@@ -9,9 +13,20 @@ type Props = {
 
 export function CorrectGuess({ track, next, onClick }: Props) {
   return (
-    <>
-      You guessed it correctly! The song was {track.track.name} by {track.track.artists[0].name}
-      <Button text="Next" disabled={!next} onClick={onClick}/>
-    </>
+    <div className={styles.wrapper}>
+      <img className={styles.cover} src={track.track.album.images[0].url}/>
+      <div className={styles.name}>
+        {track.track.name}
+      </div>
+      <div className={styles.artist}>
+        {track.track.artists[0].name}
+      </div>
+      <div className={styles.actions}>
+        <Link href="/" passHref={true}>
+          <Button as="a" className={styles.link} text="Stop"/>
+        </Link>
+        <Button text="Next" disabled={!next} onClick={onClick}/>
+      </div>
+    </div>
   );
 }

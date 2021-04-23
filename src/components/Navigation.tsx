@@ -19,7 +19,7 @@ export function Navigation() {
           <Logo className={styles.logo}/>
         </div>
         {pathname === '/game' && (
-          <Link href="/">
+          <Link href="/" passHref={true}>
             <Button as="a" className={styles.link} text="Stop"/>
           </Link>
         )}
