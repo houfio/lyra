@@ -4,6 +4,8 @@ import fetch from 'node-fetch';
 
 import { validLyric } from '../utils/validLyric';
 
+const data: Record<string, string[]> = {};
+
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { artist, track } = req.query;
 
@@ -12,6 +14,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       success: false,
       message: 'Invalid parameters'
     });
+  }
+
+  const key = `${artist}-${track}`;
+
+  if (data[key]) {
+    return {
+      success: true,
+      data: data[key]
+    };
   }
 
   let lyrics = await fetchLyrics(artist, track);
@@ -27,6 +38,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       message: 'Unable to parse song'
     });
   }
+
+  data[key] = lyrics;
 
   res.json({
     success: true,
