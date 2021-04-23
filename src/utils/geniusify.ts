@@ -1,4 +1,8 @@
-export function geniusify(str: string) {
+export function geniusify(str: string | string[]): string {
+  if (Array.isArray(str)) {
+    return str.map((s) => geniusify(s)).join('-and-');
+  }
+
   return stripEnd(stripEnd(str, '('), '-')
     .trim()
     .replaceAll('.', '')

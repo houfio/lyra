@@ -22,7 +22,7 @@ export default function Game() {
   const [tracks, setTracks] = useState<CollectionEntry<TracksResponse>[]>([]);
   const [track, setTrack] = useState<CollectionEntry<TracksResponse>>();
   const [, { data, loading: dataLoading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
-    artist: geniusify(track.track.artists[0].name),
+    artist: geniusify(track.track.artists.map((a) => a.name)),
     track: geniusify(track.track.name)
   }), skip || !track);
 
