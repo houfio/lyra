@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import { FetchTracks } from '../components/game/FetchTracks';
+import { Button } from '../components/forms/Button';
+import { FetchPlaylists } from '../components/game/FetchPlaylists';
 import { Lyric } from '../components/game/Lyric';
 import { Tracks } from '../components/game/Tracks';
 import { Container } from '../components/layout/Container';
@@ -12,68 +13,53 @@ import { useNotify } from '../hooks/useNotify';
 import { CollectionEntry, LyricResponse, TracksResponse } from '../types';
 import { buildUrl } from '../utils/buildUrl';
 import { geniusify } from '../utils/geniusify';
+import { CorrectGuess } from '../components/game/CorrectGuess';
 
 export default function Game() {
   const skip = useAuthGuard();
   const notify = useNotify();
-  const randomizeRef = useRef<() => void>();
+  const randomizeRef = useRef<(correct: boolean) => void>();
   const { query: { playlist } } = useRouter();
-  const [loading, setLoading] = useState<string[]>([]);
   const [tracks, setTracks] = useState<CollectionEntry<TracksResponse>[]>([]);
   const [track, setTrack] = useState<CollectionEntry<TracksResponse>>();
-  const [, { data, loading: dataLoading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
+  const [guessed, setGuessed] = useState<CollectionEntry<TracksResponse>>();
+  const [, { data, loading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
     artist: geniusify(track.track.artists.map((a) => a.name)),
     track: geniusify(track.track.name)
   }), skip || !track);
 
-  randomizeRef.current = () => setTrack(tracks[Math.floor(Math.random() * tracks.length)]);
+  randomizeRef.current = (correct) => {
+    setGuessed(correct ? track : undefined);
 
-  useEffect(() => {
-    if (skip || !playlist || tracks.length) {
-      return;
+    let nextTrack = track;
+
+    while (nextTrack === track) {
+      nextTrack = tracks[Math.floor(Math.random() * tracks.length)]
     }
 
-    setLoading(Array.isArray(playlist) ? playlist : [playlist]);
-  }, [skip, playlist, tracks, setLoading]);
+    setTrack(nextTrack);
+  };
 
   useEffect(() => {
-    if (loading.length) {
-      return;
+    if (tracks.length) {
+      randomizeRef.current?.(false);
     }
-
-    randomizeRef.current?.();
-  }, [loading]);
+  }, [tracks]);
 
   useEffect(() => {
     if (data?.success === false) {
-      randomizeRef.current?.();
+      randomizeRef.current?.(false);
     }
   }, [data]);
 
-  return (
+  return !playlist ? null : (
     <Container>
-      {!loading.length && !tracks.length ? (
+      {!tracks.length ? (
+        <FetchPlaylists playlists={playlist} onFetch={setTracks}/>
+      ) : !data || !data.success || !track ? (
         <Spinner/>
-      ) : loading.length ? (
-        <>
-          <Spinner/>
-          {loading.map((id) => (
-            <div key={id}>
-              <FetchTracks
-                id={id}
-                onFetch={(t) => {
-                  setLoading((value) => value.filter((l) => l !== id));
-                  setTracks((value) => [
-                    ...value,
-                    ...t
-                  ]);
-                }}
-              />
-            </div>
-          ))}
-        </>
-      ) : !data || !data.success || !track || dataLoading ? (
-        <Spinner/>
+      ) : guessed ? (
+        <CorrectGuess track={guessed} next={!loading} onClick={() => setGuessed(undefined)}/>
       ) : (
         <>
           <Lyric track={track} lyrics={data.data}/>
@@ -84,7 +70,7 @@ export default function Game() {
                 return notify('Incorrect guess');
               }
 
-              randomizeRef.current?.();
+              randomizeRef.current?.(true);
             }}
           />
         </>
