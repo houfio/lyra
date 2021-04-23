@@ -14,13 +14,31 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  const response = await fetch(`https://genius.com/${artist}-${track}-lyrics`);
+  let lyrics = await fetchLyrics(artist, track);
+  const index = artist.indexOf('-and-');
 
-  if (!response.ok) {
+  if (!lyrics && index !== -1) {
+    lyrics = await fetchLyrics(artist.substr(0, index), track);
+  }
+
+  if (!lyrics) {
     return res.json({
       success: false,
       message: 'Unable to parse song'
     });
+  }
+
+  res.json({
+    success: true,
+    data: lyrics
+  });
+}
+
+async function fetchLyrics(artist: string, track: string) {
+  const response = await fetch(`https://genius.com/${artist}-${track}-lyrics`);
+
+  if (!response.ok) {
+    return;
   }
 
   const html = await response.text();
@@ -33,14 +51,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     .filter(validLyric as any);
 
   if (!lyrics.length) {
-    return res.json({
-      success: false,
-      message: 'Instrumental song'
-    });
+    return;
   }
 
-  res.json({
-    success: true,
-    data: lyrics
-  });
+  return lyrics as any as string[];
 }
