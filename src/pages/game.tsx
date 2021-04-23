@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '../components/forms/Button';
+import { CorrectGuess } from '../components/game/CorrectGuess';
 import { FetchPlaylists } from '../components/game/FetchPlaylists';
 import { Lyric } from '../components/game/Lyric';
 import { Tracks } from '../components/game/Tracks';
@@ -13,7 +13,6 @@ import { useNotify } from '../hooks/useNotify';
 import { CollectionEntry, LyricResponse, TracksResponse } from '../types';
 import { buildUrl } from '../utils/buildUrl';
 import { geniusify } from '../utils/geniusify';
-import { CorrectGuess } from '../components/game/CorrectGuess';
 
 export default function Game() {
   const skip = useAuthGuard();
@@ -29,12 +28,14 @@ export default function Game() {
   }), skip || !track);
 
   randomizeRef.current = (correct) => {
-    setGuessed(correct ? track : undefined);
+    if (correct) {
+      setGuessed(track);
+    }
 
     let nextTrack = track;
 
     while (nextTrack === track) {
-      nextTrack = tracks[Math.floor(Math.random() * tracks.length)]
+      nextTrack = tracks[Math.floor(Math.random() * tracks.length)];
     }
 
     setTrack(nextTrack);
@@ -54,10 +55,20 @@ export default function Game() {
 
   return !playlist ? null : (
     <Container>
-      {!tracks.length ? (
-        <FetchPlaylists playlists={playlist} onFetch={setTracks}/>
-      ) : !data || !data.success || !track ? (
-        <Spinner/>
+      {!tracks.length || !data || !data.success || !track ? (
+        <>
+          <Spinner/>
+          {!tracks.length ? (
+            <>
+              <FetchPlaylists playlists={playlist} onFetch={setTracks}/>
+              Loading tracks...
+            </>
+          ) : (
+            <>
+              Loading lyrics...
+            </>
+          )}
+        </>
       ) : guessed ? (
         <CorrectGuess track={guessed} next={!loading} onClick={() => setGuessed(undefined)}/>
       ) : (

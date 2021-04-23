@@ -22,8 +22,7 @@ export function FetchPlaylists({ playlists, onFetch }: Props) {
   }, [loading, tracks, onFetch]);
 
   return (
-    <div>
-      loading...
+    <>
       {loading.map((id) => (
         <div key={id}>
           <FetchTracks
@@ -38,6 +37,6 @@ export function FetchPlaylists({ playlists, onFetch }: Props) {
           />
         </div>
       ))}
-    </div>
+    </>
   );
 }
