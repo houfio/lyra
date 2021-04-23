@@ -32,6 +32,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     .get()
     .filter(validLyric as any);
 
+  if (!lyrics.length) {
+    return res.json({
+      success: false,
+      message: 'Instrumental song'
+    });
+  }
+
   res.json({
     success: true,
     data: lyrics
