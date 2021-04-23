@@ -7,6 +7,7 @@ export function geniusify(str: string | string[]): string {
     .trim()
     .replaceAll('.', '')
     .replaceAll(' ', '-')
+    .replaceAll('?', '-')
     .toLowerCase();
 }
 
