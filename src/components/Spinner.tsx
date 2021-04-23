@@ -1,7 +1,11 @@
+import { ComponentPropsWithoutRef } from 'react';
+
+import { classes } from '../utils/classes';
+
 import styles from './Spinner.module.scss';
 
-export function Spinner() {
+export function Spinner(props: ComponentPropsWithoutRef<'div'>) {
   return (
-    <div className={styles.spinner}/>
+    <div {...props} className={classes(styles.spinner, props)}/>
   );
 }

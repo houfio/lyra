@@ -25,7 +25,7 @@ export function CorrectGuess({ track, next, onClick }: Props) {
         <Link href="/" passHref={true}>
           <Button as="a" className={styles.link} text="Stop"/>
         </Link>
-        <Button text="Next" disabled={!next} onClick={onClick}/>
+        <Button text="Next" loading={!next} onClick={onClick}/>
       </div>
     </div>
   );
