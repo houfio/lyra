@@ -1,3 +1,5 @@
 export function validLyric(lyric: string) {
-  return lyric.length && !lyric.startsWith('(') && !lyric.startsWith('[');
+  return lyric.length > 6
+    && !lyric.startsWith('(')
+    && !lyric.startsWith('[');
 }
