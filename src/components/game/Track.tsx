@@ -12,6 +12,7 @@ export function Track({ track, onClick }: Props) {
   return (
     <Card
       title={track.track.name}
+      subtitle={track.track.artists[0].name}
       cover={track.track.album.images[0]?.url}
       className={styles.track}
       as="button"
