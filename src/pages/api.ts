@@ -25,12 +25,17 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     };
   }
 
-  let lyrics = await fetchLyrics(artist, track);
-  const index = artist.indexOf('-and-');
+  let lyrics: string[] | undefined;
+  let index = -1;
+  let artists = artist;
 
-  if (!lyrics && index !== -1) {
-    lyrics = await fetchLyrics(artist.substr(0, index), track);
-  }
+  do {
+    console.log('Fetching', track, 'by', artists);
+
+    lyrics = await fetchLyrics(artists, track);
+    index = artists.lastIndexOf('-and-');
+    artists = artists.substr(0, index);
+  } while (!lyrics && index !== -1)
 
   if (!lyrics) {
     return res.json({
