@@ -1,17 +1,18 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import { CorrectGuess } from '../components/game/CorrectGuess';
 import { FetchPlaylists } from '../components/game/FetchPlaylists';
+import { GuessTrack } from '../components/game/GuessTrack';
 import { Lyric } from '../components/game/Lyric';
-import { Tracks } from '../components/game/Tracks';
+import { RoundResult } from '../components/game/RoundResult';
+import { RoundState } from '../components/game/RoundState';
 import { Center } from '../components/layout/Center';
 import { Container } from '../components/layout/Container';
 import { Spinner } from '../components/Spinner';
 import { useAuthGuard } from '../hooks/useAuthGuard';
 import { useFetch } from '../hooks/useFetch';
 import { useNotify } from '../hooks/useNotify';
-import { CollectionEntry, LyricResponse, TracksResponse } from '../types';
+import { CollectionEntry, GameState, LyricResponse, TracksResponse } from '../types';
 import { buildUrl } from '../utils/buildUrl';
 import { geniusify } from '../utils/geniusify';
 
@@ -23,7 +24,8 @@ export default function Game() {
   const [tracks, setTracks] = useState<CollectionEntry<TracksResponse>[]>([]);
   const [track, setTrack] = useState<CollectionEntry<TracksResponse>>();
   const [last, setLast] = useState<{ skipped: boolean, track: CollectionEntry<TracksResponse> }>();
-  const [lyric, setLyric] = useState({});
+  const [reload, setReload] = useState(0);
+  const [state, setState] = useState<GameState>({ total: 0, correct: 0, score: 0 })
   const [, { data, loading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
     artist: geniusify(track.track.artists.map((a) => a.name)),
     track: geniusify(track.track.name)
@@ -31,7 +33,13 @@ export default function Game() {
 
   randomizeRef.current = (skipped) => {
     if (skipped !== undefined && track) {
+      setState({
+        total: state.total + 1,
+        correct: state.correct + (skipped ? 0 : 1),
+        score: state.score + (skipped ? 0 : Math.max(1, 5 - reload))
+      });
       setLast({ skipped, track });
+      setReload(0);
     }
 
     let nextTrack = track;
@@ -58,12 +66,15 @@ export default function Game() {
   return !playlist ? null : (
     <Container>
       {last ? (
-        <CorrectGuess
-          track={last.track}
-          skipped={last.skipped}
-          next={!loading}
-          onClick={() => setLast(undefined)}
-        />
+        <Center>
+          <RoundResult
+            track={last.track}
+            skipped={last.skipped}
+            next={!loading}
+            onClick={() => setLast(undefined)}
+          />
+          <RoundState state={state}/>
+        </Center>
       ) : !tracks.length || !data || !data.success || !track ? (
         <Center>
           <Spinner/>
@@ -80,8 +91,8 @@ export default function Game() {
         </Center>
       ) : (
         <>
-          <Lyric lyric={lyric} track={track} lyrics={data.data}/>
-          <Tracks
+          <Lyric reload={reload} track={track} lyrics={data.data}/>
+          <GuessTrack
             tracks={tracks}
             onGuess={(guess) => {
               if (guess !== track) {
@@ -90,7 +101,7 @@ export default function Game() {
 
               randomizeRef.current?.(false);
             }}
-            onReload={() => setLyric({})}
+            onReload={() => setReload(reload + 1)}
             onSkip={() => randomizeRef.current?.(true)}
           />
         </>

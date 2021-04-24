@@ -6,8 +6,8 @@ import { Button } from '../forms/Button';
 import { Reload } from '../icons/Reload';
 import { Skip } from '../icons/Skip';
 
+import styles from './GuessTrack.module.scss';
 import { Track } from './Track';
-import styles from './Tracks.module.scss';
 
 type Props = {
   tracks: CollectionEntry<TracksResponse>[],
@@ -16,7 +16,7 @@ type Props = {
   onSkip: () => void
 };
 
-export function Tracks({ tracks, onGuess, onReload, onSkip }: Props) {
+export function GuessTrack({ tracks, onGuess, onReload, onSkip }: Props) {
   const fuse = useMemo(() => new Fuse(tracks, {
     keys: ['track.name', 'track.artists.name']
   }), [tracks]);

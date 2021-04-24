@@ -4,9 +4,8 @@ import { CollectionEntry, TracksResponse } from '../../types';
 import { Card } from '../Card';
 import { Button } from '../forms/Button';
 import { Play } from '../icons/Play';
-import { Center } from '../layout/Center';
 
-import styles from './CorrectGuess.module.scss';
+import styles from './RoundResult.module.scss';
 
 type Props = {
   track: CollectionEntry<TracksResponse>,
@@ -15,12 +14,12 @@ type Props = {
   onClick: () => void
 };
 
-export function CorrectGuess({ track, skipped, next, onClick }: Props) {
+export function RoundResult({ track, skipped, next, onClick }: Props) {
   const [execute] = useFetch('https://api.spotify.com/v1/me/player/play');
   const notify = useNotify();
 
   return (
-    <Center>
+    <>
       <div className={styles.play}>
         <Card
           title={track.track.name}
@@ -41,6 +40,6 @@ export function CorrectGuess({ track, skipped, next, onClick }: Props) {
         {skipped ? 'Better luck next time!' : 'You guessed it correctly!'}
       </div>
       <Button text="Next song" loading={!next} onClick={onClick}/>
-    </Center>
+    </>
   );
 }

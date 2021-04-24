@@ -1,0 +1,19 @@
+.state {
+  display: flex;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: var(--gray-100);
+  border-radius: 8px;
+}
+
+.stat {
+  &:not(:last-child) {
+    margin-right: 2rem;
+  }
+
+  & > *:first-child {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+}

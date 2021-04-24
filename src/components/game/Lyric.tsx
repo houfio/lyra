@@ -6,13 +6,13 @@ import { Quote } from '../icons/Quote';
 import styles from './Lyric.module.scss';
 
 type Props = {
-  lyric: object,
+  reload: number,
   track: CollectionEntry<TracksResponse>,
   lyrics: string[]
 };
 
-export function Lyric({ lyric: key, track, lyrics }: Props) {
-  const lyric = useMemo(() => lyrics[Math.floor(Math.random() * lyrics.length)], [track.track.id, key]);
+export function Lyric({ reload, track, lyrics }: Props) {
+  const lyric = useMemo(() => lyrics[Math.floor(Math.random() * lyrics.length)], [track.track.id, reload]);
 
   return (
     <div className={styles.wrapper}>

@@ -69,3 +69,9 @@ type Image = {
 };
 
 export type CollectionEntry<T> = T extends Collection<infer V> ? V : never;
+
+export type GameState = {
+  total: number,
+  correct: number,
+  score: number
+};
