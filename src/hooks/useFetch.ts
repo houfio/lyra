@@ -4,7 +4,7 @@ import { useAuthentication } from '../states/authentication';
 
 import { useNotify } from './useNotify';
 
-export function useFetch<T>(url: string, skip = false) {
+export function useFetch<T>(url: string, skip?: boolean) {
   const notify = useNotify();
   const [{ accessToken, refreshToken, expiry }, { login, logout }] = useAuthentication();
   const [data, setData] = useState<T>();
@@ -31,8 +31,14 @@ export function useFetch<T>(url: string, skip = false) {
       }
     });
 
-    if (!response.ok) {
+    if (response.status === 401) {
       await logout();
+
+      return;
+    } else if (!response.ok) {
+      await login(notify, refreshToken);
+
+      return;
     }
 
     setLoading(false);
@@ -40,7 +46,7 @@ export function useFetch<T>(url: string, skip = false) {
   }, [url, accessToken, expiry, login, logout, notify, setData, setLoading]);
 
   useEffect(() => {
-    if (!skip) {
+    if (skip === false) {
       execute();
     }
   }, [skip, execute]);
