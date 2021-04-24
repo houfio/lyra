@@ -20,11 +20,9 @@ export function Card<T extends keyof JSX.IntrinsicElements = 'div'>({ title, sub
     'data-big': big,
     children: (
       <>
-        {cover ? (
-          <img src={cover} className={styles.cover}/>
-        ) : (
-          <Cover className={styles.cover}/>
-        )}
+        <div className={styles.cover} style={{ '--cover': `url('${cover}')` } as any}>
+          <Cover/>
+        </div>
         <div className={styles.details}>
           {title}
           <span>
