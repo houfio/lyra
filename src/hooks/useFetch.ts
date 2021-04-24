@@ -32,10 +32,12 @@ export function useFetch<T>(url: string, skip?: boolean) {
     });
 
     if (response.status === 401) {
+      notify('Unable to access Spotify API');
       await logout();
 
       return;
     } else if (!response.ok) {
+      notify('Something went wrong');
       await login(notify, refreshToken);
 
       return;
