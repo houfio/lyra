@@ -1,15 +1,17 @@
+@import "src/utils";
+
 .navigation {
   position: sticky;
   top: 0;
   background-color: var(--gray-0);
-  border-top: 3px solid var(--green-200);
+  border-top: $navigationBorder solid var(--green-200);
   z-index: 10;
 }
 
 .inner {
   flex-direction: row !important;
   align-items: center;
-  height: 8rem;
+  height: $navigationBar;
 }
 
 .brand {

@@ -1,3 +1,7 @@
+$navigationBar: 8rem;
+$navigationBorder: 3px;
+$navigation: calc(#{$navigationBar} + #{$navigationBorder});
+
 $breakpoints: (
   phone: 0,
   tablet: 37.5,

@@ -7,8 +7,8 @@
 
   @include with-breakpoint(tablet) {
     position: sticky;
-    top: calc(8rem + 3rem);
-    height: calc(100vh - 14rem);
+    top: 11rem;
+    height: calc(100vh - #{$navigation} - 6rem);
   }
 }
 

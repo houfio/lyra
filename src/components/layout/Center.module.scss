@@ -1,0 +1,10 @@
+@import "src/utils";
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - #{$navigation});
+  padding: 2rem 0;
+}

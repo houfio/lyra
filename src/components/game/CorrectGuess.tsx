@@ -4,6 +4,7 @@ import { CollectionEntry, TracksResponse } from '../../types';
 import { Card } from '../Card';
 import { Button } from '../forms/Button';
 import { Play } from '../icons/Play';
+import { Center } from '../layout/Center';
 
 import styles from './CorrectGuess.module.scss';
 
@@ -18,7 +19,7 @@ export function CorrectGuess({ track, next, onClick }: Props) {
   const notify = useNotify();
 
   return (
-    <div className={styles.wrapper}>
+    <Center>
       <div className={styles.play}>
         <Card
           title={track.track.name}
@@ -35,7 +36,10 @@ export function CorrectGuess({ track, next, onClick }: Props) {
         />
         <Play className={styles.icon}/>
       </div>
+      <div className={styles.subtitle}>
+        You guessed it correctly!
+      </div>
       <Button text="Next song" loading={!next} onClick={onClick}/>
-    </div>
+    </Center>
   );
 }

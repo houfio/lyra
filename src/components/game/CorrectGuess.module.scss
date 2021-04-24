@@ -1,11 +1,9 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .play {
   position: relative;
+}
+
+.subtitle {
+  margin-bottom: 2rem;
 }
 
 .track:hover {
@@ -24,4 +22,5 @@
   transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity .25s ease;
+  pointer-events: none;
 }
