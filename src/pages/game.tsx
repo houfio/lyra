@@ -18,19 +18,19 @@ import { geniusify } from '../utils/geniusify';
 export default function Game() {
   const skip = useAuthGuard();
   const notify = useNotify();
-  const randomizeRef = useRef<(correct: boolean) => void>();
+  const randomizeRef = useRef<(skipped?: boolean) => void>();
   const { query: { playlist } } = useRouter();
   const [tracks, setTracks] = useState<CollectionEntry<TracksResponse>[]>([]);
   const [track, setTrack] = useState<CollectionEntry<TracksResponse>>();
-  const [guessed, setGuessed] = useState<CollectionEntry<TracksResponse>>();
+  const [last, setLast] = useState<{ skipped: boolean, track: CollectionEntry<TracksResponse> }>();
   const [, { data, loading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
     artist: geniusify(track.track.artists.map((a) => a.name)),
     track: geniusify(track.track.name)
   }), skip || !track);
 
-  randomizeRef.current = (correct) => {
-    if (correct) {
-      setGuessed(track);
+  randomizeRef.current = (skipped) => {
+    if (skipped !== undefined && track) {
+      setLast({ skipped, track });
     }
 
     let nextTrack = track;
@@ -44,19 +44,26 @@ export default function Game() {
 
   useEffect(() => {
     if (tracks.length) {
-      randomizeRef.current?.(false);
+      randomizeRef.current?.();
     }
   }, [tracks]);
 
   useEffect(() => {
     if (data?.success === false) {
-      randomizeRef.current?.(false);
+      randomizeRef.current?.();
     }
   }, [data]);
 
   return !playlist ? null : (
     <Container>
-      {!tracks.length || !data || !data.success || !track ? (
+      {last ? (
+        <CorrectGuess
+          track={last.track}
+          skipped={last.skipped}
+          next={!loading}
+          onClick={() => setLast(undefined)}
+        />
+      ) : !tracks.length || !data || !data.success || !track ? (
         <Center>
           <Spinner/>
           {!tracks.length ? (
@@ -70,20 +77,19 @@ export default function Game() {
             </>
           )}
         </Center>
-      ) : guessed ? (
-        <CorrectGuess track={guessed} next={!loading} onClick={() => setGuessed(undefined)}/>
       ) : (
         <>
           <Lyric track={track} lyrics={data.data}/>
           <Tracks
             tracks={tracks}
-            onClick={(guess) => {
+            onGuess={(guess) => {
               if (guess !== track) {
                 return notify('Incorrect guess');
               }
 
-              randomizeRef.current?.(true);
+              randomizeRef.current?.(false);
             }}
+            onSkip={() => randomizeRef.current?.(true)}
           />
         </>
       )}

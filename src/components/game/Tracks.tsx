@@ -2,16 +2,19 @@ import Fuse from 'fuse.js';
 import { useMemo, useState } from 'react';
 
 import { CollectionEntry, TracksResponse } from '../../types';
+import { Button } from '../forms/Button';
+import { Skip } from '../icons/Skip';
 
 import { Track } from './Track';
 import styles from './Tracks.module.scss';
 
 type Props = {
   tracks: CollectionEntry<TracksResponse>[],
-  onClick: (track: CollectionEntry<TracksResponse>) => void
+  onGuess: (track: CollectionEntry<TracksResponse>) => void,
+  onSkip: () => void
 };
 
-export function Tracks({ tracks, onClick }: Props) {
+export function Tracks({ tracks, onGuess, onSkip }: Props) {
   const fuse = useMemo(() => new Fuse(tracks, {
     keys: ['track.name', 'track.artists.name']
   }), [tracks]);
@@ -20,17 +23,22 @@ export function Tracks({ tracks, onClick }: Props) {
 
   return (
     <div>
-      <input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className={styles.input}
-        placeholder="Enter your guess here..."
-      />
+      <div className={styles.wrapper}>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={styles.input}
+          placeholder="Enter your guess here..."
+        />
+        <Button text="Skip" className={styles.skip} onClick={onSkip}>
+          <Skip className={styles.icon}/>
+        </Button>
+      </div>
       {results.map(({ item }) => (
         <Track
           key={item.track.id}
           track={item}
-          onClick={() => onClick(item)}
+          onClick={() => onGuess(item)}
         />
       ))}
     </div>

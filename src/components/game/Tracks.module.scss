@@ -1,20 +1,46 @@
 @import "src/utils";
 
-.input {
+.wrapper {
+  display: flex;
   width: 100%;
   margin: 0 0 2rem;
-  padding: 1rem 1.5rem;
   background-color: var(--gray-200);
   border-radius: 8px;
+
+  @include with-breakpoint(laptop) {
+    margin: 0 8rem 2rem;
+    width: calc(100% - 16rem);
+  }
+
+  & > * {
+    border-radius: 0 !important;
+
+    &:first-child {
+      border-radius: 8px 0 0 8px !important;
+    }
+
+    &:last-child {
+      border-radius: 0 8px 8px 0 !important;
+    }
+  }
+}
+
+.input {
+  flex: 1;
+  padding: 1rem 1.5rem;
   transition: box-shadow .25s ease;
 
   &:focus {
     box-shadow: 0 0 0 3px var(--green-300);
     z-index: 1;
   }
+}
 
-  @include with-breakpoint(laptop) {
-    margin: 0 8rem 2rem;
-    width: calc(100% - 16rem);
-  }
+.skip {
+  background-color: var(--gray-100) !important;
+  color: var(--gray-500) !important;
+}
+
+.icon {
+  width: 1.5rem;
 }

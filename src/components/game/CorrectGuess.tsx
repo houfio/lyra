@@ -10,11 +10,12 @@ import styles from './CorrectGuess.module.scss';
 
 type Props = {
   track: CollectionEntry<TracksResponse>,
+  skipped: boolean,
   next: boolean,
   onClick: () => void
 };
 
-export function CorrectGuess({ track, next, onClick }: Props) {
+export function CorrectGuess({ track, skipped, next, onClick }: Props) {
   const [execute] = useFetch('https://api.spotify.com/v1/me/player/play');
   const notify = useNotify();
 
@@ -37,7 +38,7 @@ export function CorrectGuess({ track, next, onClick }: Props) {
         <Play className={styles.icon}/>
       </div>
       <div className={styles.subtitle}>
-        You guessed it correctly!
+        {skipped ? 'Better luck next time!' : 'You guessed it correctly!'}
       </div>
       <Button text="Next song" loading={!next} onClick={onClick}/>
     </Center>
