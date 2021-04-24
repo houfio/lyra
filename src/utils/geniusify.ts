@@ -3,12 +3,12 @@ export function geniusify(str: string | string[]): string {
     return str.map((s) => geniusify(s)).join('-and-');
   }
 
-  return stripEnd(stripEnd(str, '('), '-')
+  return stripEnd(stripEnd(str, ' ('), ' -')
+    .normalize('NFD')
     .trim()
-    .replaceAll('.', '')
-    .replaceAll(' ', '-')
-    .replaceAll('?', '-')
-    .toLowerCase();
+    .toLowerCase()
+    .replaceAll(/[ !]/g, '-')
+    .replaceAll(/[.#'?\u0300-\u036f]|[^a-z0-9-]/g, '');
 }
 
 function stripEnd(str: string, char: string) {
