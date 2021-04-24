@@ -6,12 +6,6 @@
   padding: 1rem 1.5rem;
   background-color: var(--gray-200);
   border-radius: 8px;
-  transition: box-shadow .25s ease;
-
-  &:focus {
-    box-shadow: 0 0 0 3px var(--green-300);
-    z-index: 1;
-  }
 
   @include with-breakpoint(laptop) {
     margin: 0 8rem 2rem;

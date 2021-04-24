@@ -24,6 +24,7 @@ export type PlaylistsResponse = Collection<Identifiable<{
 export type TracksResponse = Collection<{
   track: {
     id: string,
+    uri: string,
     name: string,
     preview_url: string,
     album: {

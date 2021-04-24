@@ -3,3 +3,25 @@
   flex-direction: column;
   align-items: center;
 }
+
+.play {
+  position: relative;
+}
+
+.track:hover {
+  opacity: .5;
+
+  & ~ .icon {
+    opacity: 1;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5rem;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity .25s ease;
+}

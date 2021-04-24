@@ -23,7 +23,7 @@ export function useFetch<T>(url: string, skip?: boolean) {
     }
 
     const response = await fetch(url, {
-      method: payload ? 'post' : 'get',
+      method: payload ? 'put' : 'get',
       body: JSON.stringify(payload),
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -42,7 +42,10 @@ export function useFetch<T>(url: string, skip?: boolean) {
     }
 
     setLoading(false);
-    setData(await response.json());
+
+    if (!payload) {
+      setData(await response.json());
+    }
   }, [url, accessToken, expiry, login, logout, notify, setData, setLoading]);
 
   useEffect(() => {

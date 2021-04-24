@@ -10,6 +10,11 @@
   user-select: none;
   transition: box-shadow .25s ease, opacity .25s ease;
 
+  &:focus {
+    box-shadow: 0 0 0 3px var(--green-300);
+    z-index: 1;
+  }
+
   &[data-big="true"] {
     flex-direction: column;
     width: 22rem;
