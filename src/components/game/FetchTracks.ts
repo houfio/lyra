@@ -16,7 +16,7 @@ export function FetchTracks({ id, onFetch }: Props) {
     offset: String(offset),
     limit: '100',
     fields: 'next,items(track(id,name,preview_url,album(images),artists(name)))'
-  }));
+  }), false);
 
   useEffect(() => {
     if (!data) {

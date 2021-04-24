@@ -36,7 +36,7 @@ export default function Login() {
       redirect_uri: redirectUrl,
       code_challenge_method: 'S256',
       code_challenge: await encodeCode(generated),
-      scope: 'playlist-read-private'
+      scope: 'playlist-read-private,user-library-read'
     });
   };
 

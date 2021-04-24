@@ -14,7 +14,7 @@ export function Playlists({ playlists }: Props) {
         Playlists
       </span>
       <span className={styles.help}>
-        Click on a playlist to enable it
+        Click on playlists to enable them
       </span>
       {playlists.map((playlist) => (
         <Playlist key={playlist.id} name="playlists" playlist={playlist}/>
