@@ -18,7 +18,8 @@ export function FetchPlaylists({ playlists, onFetch }: Props) {
       return;
     }
 
-    onFetch(tracks);
+    onFetch(tracks.filter((track, i) => tracks
+      .findIndex((t) => t.track.id === track.track.id) === i));
   }, [loading, tracks, onFetch]);
 
   return (
