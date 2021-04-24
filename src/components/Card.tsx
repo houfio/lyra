@@ -9,13 +9,15 @@ type Props<T> = {
   title: string,
   subtitle?: string,
   cover?: string,
+  big?: boolean,
   as?: T
 };
 
-export function Card<T extends keyof JSX.IntrinsicElements = 'div'>({ title, subtitle, cover, as, ...props }: Props<T> & ComponentPropsWithoutRef<T>) {
+export function Card<T extends keyof JSX.IntrinsicElements = 'div'>({ title, subtitle, cover, big = false, as, ...props }: Props<T> & ComponentPropsWithoutRef<T>) {
   return createElement(as ?? 'div', {
     ...props,
     className: classes(styles.card, props),
+    'data-big': big,
     children: (
       <>
         {cover ? (

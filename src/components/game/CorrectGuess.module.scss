@@ -3,34 +3,3 @@
   flex-direction: column;
   align-items: center;
 }
-
-.cover {
-  width: 20rem;
-  margin: 4rem 0 1rem;
-  border-radius: 16px;
-}
-
-.name {
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-.artist {
-  margin-bottom: 2rem;
-}
-
-.actions {
-  display: flex;
-  width: 40rem;
-  max-width: 100%;
-
-  & > button {
-    flex: 1;
-  }
-}
-
-.link {
-  margin-right: 1rem;
-  background-color: var(--gray-0);
-  color: var(--gray-500);
-}

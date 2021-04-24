@@ -9,6 +9,27 @@
   border-radius: 16px;
   user-select: none;
   transition: box-shadow .25s ease, opacity .25s ease;
+
+  &[data-big="true"] {
+    flex-direction: column;
+    width: 22rem;
+    max-width: 100%;
+
+    & > .cover {
+      width: 100%;
+      margin: 0 0 2rem;
+    }
+
+    & > .details {
+      text-align: center;
+      font-size: 2rem;
+
+      & > *:last-child {
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+    }
+  }
 }
 
 .cover {
