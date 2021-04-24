@@ -36,9 +36,16 @@
   }
 }
 
+.reload, .skip {
+  color: var(--gray-500) !important;
+}
+
+.reload {
+  background-color: var(--gray-200) !important;
+}
+
 .skip {
   background-color: var(--gray-100) !important;
-  color: var(--gray-500) !important;
 }
 
 .icon {

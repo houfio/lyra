@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 
 import { CollectionEntry, TracksResponse } from '../../types';
 import { Button } from '../forms/Button';
+import { Reload } from '../icons/Reload';
 import { Skip } from '../icons/Skip';
 
 import { Track } from './Track';
@@ -11,10 +12,11 @@ import styles from './Tracks.module.scss';
 type Props = {
   tracks: CollectionEntry<TracksResponse>[],
   onGuess: (track: CollectionEntry<TracksResponse>) => void,
+  onReload: () => void,
   onSkip: () => void
 };
 
-export function Tracks({ tracks, onGuess, onSkip }: Props) {
+export function Tracks({ tracks, onGuess, onReload, onSkip }: Props) {
   const fuse = useMemo(() => new Fuse(tracks, {
     keys: ['track.name', 'track.artists.name']
   }), [tracks]);
@@ -30,6 +32,9 @@ export function Tracks({ tracks, onGuess, onSkip }: Props) {
           className={styles.input}
           placeholder="Enter your guess here..."
         />
+        <Button text="Reload lyric" className={styles.reload} onClick={onReload}>
+          <Reload className={styles.icon}/>
+        </Button>
         <Button text="Skip" className={styles.skip} onClick={onSkip}>
           <Skip className={styles.icon}/>
         </Button>

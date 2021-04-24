@@ -23,6 +23,7 @@ export default function Game() {
   const [tracks, setTracks] = useState<CollectionEntry<TracksResponse>[]>([]);
   const [track, setTrack] = useState<CollectionEntry<TracksResponse>>();
   const [last, setLast] = useState<{ skipped: boolean, track: CollectionEntry<TracksResponse> }>();
+  const [lyric, setLyric] = useState({});
   const [, { data, loading }] = useFetch<LyricResponse>(buildUrl('/api', !track ? {} : {
     artist: geniusify(track.track.artists.map((a) => a.name)),
     track: geniusify(track.track.name)
@@ -79,7 +80,7 @@ export default function Game() {
         </Center>
       ) : (
         <>
-          <Lyric track={track} lyrics={data.data}/>
+          <Lyric lyric={lyric} track={track} lyrics={data.data}/>
           <Tracks
             tracks={tracks}
             onGuess={(guess) => {
@@ -89,6 +90,7 @@ export default function Game() {
 
               randomizeRef.current?.(false);
             }}
+            onReload={() => setLyric({})}
             onSkip={() => randomizeRef.current?.(true)}
           />
         </>
