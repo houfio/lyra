@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 
 import { Form } from '../components/forms/Form';
+import { Center } from '../components/layout/Center';
 import { Column } from '../components/layout/Column';
 import { Container } from '../components/layout/Container';
 import { Row } from '../components/layout/Row';
@@ -20,7 +21,10 @@ export default function Lyra() {
   return (
     <Container>
       {!playlists.data ? (
-        <Spinner/>
+        <Center>
+          <Spinner/>
+          Logging in...
+        </Center>
       ) : (
         <Form
           values={{

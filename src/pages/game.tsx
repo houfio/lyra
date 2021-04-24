@@ -5,6 +5,7 @@ import { CorrectGuess } from '../components/game/CorrectGuess';
 import { FetchPlaylists } from '../components/game/FetchPlaylists';
 import { Lyric } from '../components/game/Lyric';
 import { Tracks } from '../components/game/Tracks';
+import { Center } from '../components/layout/Center';
 import { Container } from '../components/layout/Container';
 import { Spinner } from '../components/Spinner';
 import { useAuthGuard } from '../hooks/useAuthGuard';
@@ -56,7 +57,7 @@ export default function Game() {
   return !playlist ? null : (
     <Container>
       {!tracks.length || !data || !data.success || !track ? (
-        <>
+        <Center>
           <Spinner/>
           {!tracks.length ? (
             <>
@@ -68,7 +69,7 @@ export default function Game() {
               Loading lyrics...
             </>
           )}
-        </>
+        </Center>
       ) : guessed ? (
         <CorrectGuess track={guessed} next={!loading} onClick={() => setGuessed(undefined)}/>
       ) : (
