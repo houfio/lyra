@@ -37,9 +37,7 @@ export function useFetch<T>(url: string, skip?: boolean) {
 
       return;
     } else if (!response.ok) {
-      notify('Something went wrong');
-      await login(notify, refreshToken);
-
+      notify('Something went wrong, please try again');
       return;
     }
 
