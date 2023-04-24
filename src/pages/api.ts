@@ -66,7 +66,8 @@ async function fetchLyrics(artist: string, track: string) {
     .contents()
     .map((i, element) => element.type === 'text' ? $(element).text().trim() : '')
     .get()
-    .filter(validLyric as any);
+    .filter(validLyric as any)
+    .filter((v, i, a) => a.indexOf(v) === i);
 
   if (!lyrics.length) {
     return;

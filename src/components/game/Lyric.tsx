@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { CollectionEntry, TracksResponse } from '../../types';
 import { Quote } from '../icons/Quote';
@@ -12,7 +12,22 @@ type Props = {
 };
 
 export function Lyric({ reload, track, lyrics }: Props) {
-  const lyric = useMemo(() => lyrics[Math.floor(Math.random() * lyrics.length)], [track.track.id, reload]);
+  const previousLyric = useRef<string>();
+  const lyric = useMemo(() => {
+    let next = previousLyric.current;
+
+    while (next === previousLyric.current) {
+      next = lyrics[Math.floor(Math.random() * lyrics.length)];
+
+      if (lyrics.length === 1) {
+        return next;
+      }
+    }
+
+    previousLyric.current = next;
+
+    return next;
+  }, [track.track.id, reload]);
 
   return (
     <div className={styles.wrapper}>
