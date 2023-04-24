@@ -19,10 +19,10 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const key = `${artist}-${track}`;
 
   if (data[key]) {
-    return {
+    return res.json({
       success: true,
       data: data[key]
-    };
+    });
   }
 
   let lyrics: string[] | undefined;
@@ -62,7 +62,7 @@ async function fetchLyrics(artist: string, track: string) {
   const html = await response.text();
 
   const $ = load(html);
-  const lyrics = $('.Lyrics__Root-sc-1ynbvzw-0 *, div[initial-content-for="lyrics"] *')
+  const lyrics = $('div[data-lyrics-container="true"] *')
     .contents()
     .map((i, element) => element.type === 'text' ? $(element).text().trim() : '')
     .get()
