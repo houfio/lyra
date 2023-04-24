@@ -18,12 +18,14 @@ export function RoundResult({ track, skipped, next, onClick }: Props) {
   const [execute] = useFetch('https://api.spotify.com/v1/me/player/play');
   const notify = useNotify();
 
+  const artists = track.track.artists.map((a) => a.name).join(', ');
+
   return (
     <>
       <div className={styles.play}>
         <Card
           title={track.track.name}
-          subtitle={track.track.artists[0].name}
+          subtitle={artists}
           cover={track.track.album.images[0].url}
           big={true}
           as="button"

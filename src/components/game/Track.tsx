@@ -9,10 +9,12 @@ type Props = {
 };
 
 export function Track({ track, onClick }: Props) {
+  const artists = track.track.artists.map((a) => a.name).join(', ');
+
   return (
     <Card
       title={track.track.name}
-      subtitle={track.track.artists[0].name}
+      subtitle={artists}
       cover={track.track.album.images[0]?.url}
       className={styles.track}
       as="button"
